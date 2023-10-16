@@ -11,4 +11,18 @@ class Company extends Model
     protected $fillable = [
         'name',
     ];
+    public function children()
+    {
+        return $this->hasMany(Company::class, 'parent_company_id');
+    }
+    public function getChildCompanies()
+    {
+        $childCompanies = $this->children;
+
+        foreach ($this->children as $child) {
+            $childCompanies = $childCompanies->merge($child->getChildCompanies());
+        }
+
+        return $childCompanies;
+    }
 }

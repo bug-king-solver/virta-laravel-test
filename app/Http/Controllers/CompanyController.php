@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Station;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -78,5 +79,16 @@ class CompanyController extends Controller
     {
         Company::findOrFail($id)->delete();
         return response()->json(null, 204);
+    }
+
+    public function childStations($company_id)
+    {
+        $company = Company::findOrFail($company_id);
+        // Get all child companies recursively
+        $childCompanies = $company->getChildCompanies();
+        // Get all stations owned by child companies and the current company
+        $stations = Station::whereIn('company_id', $childCompanies->pluck('id')->push($company_id))->get();
+
+        return response()->json($stations);
     }
 }

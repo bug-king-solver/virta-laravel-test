@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Station;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StationController extends Controller
 {
@@ -88,5 +89,23 @@ class StationController extends Controller
     {
         Station::findOrFail($id)->delete();
         return response()->json(null, 204);
+    }
+
+    public function stationsWithinRadius(Request $request)
+    {
+        $latitude = $request->query('latitude');
+        $longitude = $request->query('longitude');
+        $radius = $request->query('radius');
+        $stations = DB::table('stations')
+            ->selectRaw('stations.*, 
+            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$latitude, $longitude, $latitude]
+            )
+            ->having('distance', '<=', $radius)
+            ->orderBy('distance')
+            ->get();
+        // Group stations by location (latitude and longitude)
+        $groupedStations = $stations->groupBy(['latitude', 'longitude']);
+        return response()->json($groupedStations);
     }
 }

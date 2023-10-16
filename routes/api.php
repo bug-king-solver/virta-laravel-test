@@ -20,5 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('stations-within-radius', [StationController::class, 'stationsWithinRadius']);
+Route::get('child-stations/{company_id}', [CompanyController::class, 'childStations']);
+
 Route::resource('company', CompanyController::class);
 Route::resource('station', StationController::class);
