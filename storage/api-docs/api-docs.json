@@ -1,0 +1,609 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Virta API",
+        "description": "API for managing companies and their stations.",
+        "contact": {
+            "name": "Michael Govern",
+            "email": "michaelgovern0826@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/company": {
+            "get": {
+                "summary": "Get a list of companies",
+                "description": "Returns a list of all companies.",
+                "operationId": "3e0bffb951b3f31f83aadc004638122b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "parent_company_id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new company",
+                "description": "Create a new company record.",
+                "operationId": "faf1545d2af89079ca55c4f9ed6ea302",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "parent_company_id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Company created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_company_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/company/{company}": {
+            "get": {
+                "summary": "Get a specific company",
+                "description": "Returns details of a specific company.",
+                "operationId": "339150f4b4353645e1ef425708b4f2f7",
+                "parameters": [
+                    {
+                        "name": "company",
+                        "in": "path",
+                        "description": "ID of the company to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_company_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Company not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a company",
+                "description": "Update a company record.",
+                "operationId": "3f0d99f5f2607c770763609c3d620829",
+                "parameters": [
+                    {
+                        "name": "company",
+                        "in": "path",
+                        "description": "ID of the company to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_company_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a company",
+                "description": "Delete a company record.",
+                "operationId": "066ab74a6464b2ea1b3551447b803bc1",
+                "parameters": [
+                    {
+                        "name": "company",
+                        "in": "path",
+                        "description": "ID of the company to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Company deleted successfully"
+                    },
+                    "404": {
+                        "description": "Company not found"
+                    }
+                }
+            }
+        },
+        "/api/child-stations/{company_id}": {
+            "get": {
+                "summary": "Get stations owned by a company and its children",
+                "description": "Returns a list of stations owned by a company and its children.",
+                "operationId": "170bfad14cbc1b46ed3e70ca45df0984",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "ID of the company to retrieve stations for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "latitude": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "longitude": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "company_id": {
+                                                "type": "integer"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Company not found"
+                    }
+                }
+            }
+        },
+        "/api/station": {
+            "get": {
+                "summary": "Get a list of charging stations",
+                "description": "Returns a list of all charging stations.",
+                "operationId": "2982c0b71cde36d28cc9e1aead019346",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "latitude": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "longitude": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "company_id": {
+                                                "type": "integer"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new charging station",
+                "description": "Create a new charging station record.",
+                "operationId": "75610cdd1a39f87c35d6abd82d96b7db",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "company_id": {
+                                        "type": "integer"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Station created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "company_id": {
+                                            "type": "integer"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/station/{station}": {
+            "get": {
+                "summary": "Get a specific charging station",
+                "description": "Returns details of a specific charging station.",
+                "operationId": "bde42f5a3a6cf41badc185c445ab066e",
+                "parameters": [
+                    {
+                        "name": "station",
+                        "in": "path",
+                        "description": "ID of the station to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "company_id": {
+                                            "type": "integer"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Station not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a charging station",
+                "description": "Update a charging station record.",
+                "operationId": "b956b99f9a497ce369bdff54f664d3a3",
+                "parameters": [
+                    {
+                        "name": "station",
+                        "in": "path",
+                        "description": "ID of the station to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "company_id": {
+                                        "type": "integer"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Station updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "company_id": {
+                                            "type": "integer"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a charging station",
+                "description": "Delete a charging station record.",
+                "operationId": "a0fb02bb5485bd010fd0d1405b54d934",
+                "parameters": [
+                    {
+                        "name": "station",
+                        "in": "path",
+                        "description": "ID of the station to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Station deleted successfully"
+                    },
+                    "404": {
+                        "description": "Station not found"
+                    }
+                }
+            }
+        },
+        "/api/stations-within-radius": {
+            "get": {
+                "summary": "Get charging stations within a radius",
+                "description": "Returns a list of charging stations within a specified radius.",
+                "operationId": "fc7140de4e6b3455aa4727ea94f81868",
+                "parameters": [
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "description": "Latitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "description": "Longitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "radius",
+                        "in": "query",
+                        "description": "Radius (in kilometers)",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        }
+    }
+}
