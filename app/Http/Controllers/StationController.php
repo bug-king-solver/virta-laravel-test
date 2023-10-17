@@ -89,15 +89,8 @@ class StationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'company_id' => 'required|integer',
-            'address' => 'required|string',
-        ]);
-
         try {
+            // dd($request->all());
             $station = Station::create($request->all());
             return response()->json($station, 201);
         } catch (\Throwable $th) {

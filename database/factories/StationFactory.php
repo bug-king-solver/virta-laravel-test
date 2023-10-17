@@ -17,7 +17,7 @@ class StationFactory extends Factory
      */
     public function definition(): array
     {
-        $company = Company::inRandomOrder()->first();
+        $company = Company::factory()->create();
 
         return [
             'name' => $this->faker->name,
